@@ -1,26 +1,38 @@
 task :clean do
-  system "rm -rf ~/.m2/repository/{schedule, jruby}"
+  system "rm -rf ~/.m2/repository/com/steelcity"
+  system "rm -rf ~/.m2/repository/jruby"
+
+  system "rm -rf speaker_selector/lib/*"
+
+  system "cd speaker_selector && lein clean"
+
+  system "rm -rf build"
+  mkdir_p "build/jar"
 end
 
-task :compile => :clean do
-  system "jrubyc --javac steel_city/schedule.rb -t build/"
-  system "jrubyc build/com/steelcity/schedule.java"
+task :compile_ruby do
+  system "cd steel_city && jrubyc --javac schedule.rb -t ../build"
 
-  system "jar -cf lib/schedule.jar build/com/steelcity/schedule.class"
-  system "cp \`which jruby | sed 's/bin\\/jruby//'\`/lib/jruby.jar lib/"
+  system "cd build && jar -cf jar/schedule.jar com/steelcity/Schedule.class"
+  system "cp \`which jruby | sed 's/bin\\/jruby//'\`/lib/jruby.jar build/jar/"
 end
+
+task :compile => [:clean, :compile_ruby]
 
 task :install => :compile do
-  [['schedule', '0.0.0'], ['jruby', '1.6.7.2']].each do |(package, version)|
-    cmd = <<-CMD
-      mvn install:install-file \
-        -DgroupId=#{package} \
-        -DartifactId=#{package} \
-        -Dversion=#{version} \
-        -Dpackaging=jar \
-        -Dfile=./lib/#{package}.jar
-    CMD
+  system <<-CMD
+    cd speaker_selector &&
+    mvn install:install-file -DgroupId=com.steelcity -DartifactId=schedule -Dversion=0.0.0 -Dpackaging=jar -Dfile=../build/jar/schedule.jar
+  CMD
 
-    system cmd
-  end
+  system <<-CMD
+    cd speaker_selector &&
+    mvn install:install-file -DgroupId=jruby -DartifactId=jruby -Dversion=1.6.7.2 -Dpackaging=jar -Dfile=../build/jar/jruby.jar
+  CMD
+
+  system "cd speaker_selector && lein deps"
+end
+
+task :run => :install do
+  system "cd speaker_selector && lein repl"
 end
