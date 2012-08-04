@@ -28,3 +28,9 @@ dependencies:
 
 The command to install jruby to your local mvn repository will be similar.
 
+## Running
+
+In the Clojure REPL, load the speaker-selector.core namespace and run:
+
+    (top-speaker "Friday")
+    (top-speaker "Saturday")
