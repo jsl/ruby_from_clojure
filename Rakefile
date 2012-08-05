@@ -63,3 +63,5 @@ task :run => :install do
   # Open repl with leiningen
   system "cd speaker_selector && lein repl"
 end
+
+task :default => :run
