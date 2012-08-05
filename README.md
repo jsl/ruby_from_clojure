@@ -19,7 +19,8 @@ JRuby project and a Clojure project:
 ## How does this work?
 
 For detailed instructions on how to get this working with your own Ruby code,
-have a look at the `Rakefile`
+have a look at the
+[`Rakefile`](https://github.com/jsl/ruby_from_clojure/blob/master/Rakefile)
 
     rake clean    # Remove build artifacts
     rake compile  # Compile Ruby into Java bytecode
