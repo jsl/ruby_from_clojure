@@ -3,9 +3,9 @@
 This is a simple example of calling Ruby from Clojure. It contains a simple
 JRuby project and a Clojure project:
 
-* steel_city - a Ruby project that returns the speakers for the given day
+* `steel_city` - a Ruby project that returns the speakers for the given day
   in the Steel City Ruby Conference 2012
-* speaker_selector - Returns a "top" speaker for the given day using a 
+* `speaker_selector` - Returns a "top" speaker for the given day using a 
   sophisticated algorithm (ie, random selection)
 
 ## Compiling
